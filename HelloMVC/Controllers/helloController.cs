@@ -9,7 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace HelloMVC.Controllers
 {
     public class HelloController : Controller
+
     {
+        private static int count = 0;
+
+
         // GET: /<controller>/index had (string name)
         [HttpGet]
         public IActionResult Index()
@@ -17,11 +21,11 @@ namespace HelloMVC.Controllers
             string html = "<form method='post'>" +
                 "<input type='text' name='name' />" +
                 "<select name='language' id='language'>" +
-                "<option value='Baguette'>French</option>"+
-                "<option value='Konbonwa'>Japanese</option>"+
-                "<option value='Holas'>Spanish</option>"+
-                "<option value='Gutentag'>German</option>"+
-                "<option value='Aloha'>Hawaiian</option>"+
+                "<option value='fr'>French</option>"+
+                "<option value='jp'>Japanese</option>"+
+                "<option value='sp'>Spanish</option>"+
+                "<option value='gm'>German</option>"+
+                "<option value='hw'>Hawaiian</option>"+
                 "</select>"+
                 "<input type ='submit' value='Greet me!' />" +
                 "</form>";
@@ -34,13 +38,41 @@ namespace HelloMVC.Controllers
         [HttpPost]
         public IActionResult Display(string language,string name= "World")
          {
+            string greetingHtml = CreateMessage(name, language); count++;
+            return Content(greetingHtml + "<br><p>You have been greeted"+count+"times", "text/html");
 
-           return Content($"<h1>{language} {name}</h1>","text/html");
+            //return Content($"<h1>{language} {name}</h1>","text/html");
          }
 
+        public static string CreateMessage(string name,string langOption)
+        {
+            string greeting = "";
+            switch (langOption)
+            {
+                case "hw":
+                    greeting = "aloha";
+                    break;
+                case "fr":
+                    greeting = "Baggette";
+                    break;
+                case "sp":
+                    greeting = "holas";
+                    break;
+                case "jp":
+                    greeting = "konbanwa";
+                    break;
+                case "gm":
+                    greeting = "gutentag";
+                    break;
 
 
+            }
 
+            return "<h1>"+ greeting + " " + name + "</h1>";
+        }
+
+
+        //test
         //Hello/Goodbye
         //alter the route to thiis controller to be /hello/aloha
         //[Route("/Hello/Aloha")]
